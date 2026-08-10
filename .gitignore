@@ -1,1 +1,24 @@
-.obsidian/**
+# Compiled firmware and build directories
+build/
+build-v*/
+**/build/
+**/build-v*/
+
+# ESP-IDF Configuration files
+*.old
+sdkconfig.old
+
+# VS Code specific directories (contain user-specific paths)
+.vscode/
+
+# Editor temporary files
+*~
+*.swp
+.DS_Store
+
+# Obsidian configuration
+.obsidian/
+
+# Ignore all code projects and examples
+Example_Codes/
+Lab-Week-05-Wi-Fi-ESP32/

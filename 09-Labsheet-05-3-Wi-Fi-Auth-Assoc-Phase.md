@@ -320,24 +320,33 @@ void app_main(void) {
 
 | ข้อการทดลอง | สถานการณ์ทดสอบ | Event ที่ได้รับ | ผลการผูกสัมพันธ์ Link Layer | ค่า Association ID (AID) ที่ได้ | Reason Code (ถ้ามี) |
 | :---: | :--- | :---: | :---: | :---: | :--- |
-| **5.3.1** | ร้องขอ Auth & Assoc กับ AP มีอยู่จริง | | | | |
-| **5.3.2** | ร้องขอ Auth & Assoc กับ AP ไม่มีอยู่จริง | | | | |
+| **5.3.1** | ร้องขอ Auth & Assoc กับ AP มีอยู่จริง | `WIFI_EVENT_STA_DISCONNECTED` | Failed (ถูกปฏิเสธชั่วคราว) | N/A | 208 (WIFI_REASON_CONNECTION_FAIL) |
+| **5.3.2** | ร้องขอ Auth & Assoc กับ AP ไม่มีอยู่จริง | `WIFI_EVENT_STA_DISCONNECTED` | Failed | N/A | 201 (WIFI_REASON_NO_AP_FOUND) |
 
-### 6.2 บันทึกข้อมูล Link Layer จาก Event `WIFI_EVENT_STA_CONNECTED` (ข้อ 5.3.1)
+### 6.2 บันทึกข้อมูล Link Layer จาก Event `WIFI_EVENT_STA_CONNECTED` (ข้อ 5.3.1 - อ้างอิงรอบการเชื่อมต่อสำเร็จก่อนหน้า)
 
 | พารามิเตอร์ Link Layer | ค่าที่อ่านได้จริงจาก Forensic Log |
 | :--- | :--- |
-| **SSID** | |
-| **BSSID (MAC Address)** | |
-| **Channel** | |
-| **Auth Mode Enum** | |
-| **Association ID (AID)** | |
+| **SSID** | iPhone 20 Pro Max Ultra |
+| **BSSID (MAC Address)** | AE:F4:26:58:23:AC |
+| **Channel** | 6 |
+| **Auth Mode Enum** | 6 (WIFI_AUTH_WPA3_SAE) |
+| **Association ID (AID)** | 1 |
 
 ---
 
 ## 7. คำถามท้ายการทดลอง (Post-Lab Questions)
 
 1. **Association ID (AID)** คืออะไร มีบทบาทอย่างไรใน Phase 3 และส่งคืนมาในโครงสร้างข้อมูลตัวแปรใด?
+   * **ตอบ:** คือหมายเลขระบุตัวตนของอุปกรณ์ (Client) ที่ได้จาก Access Point หลังตกลงเชื่อมต่อระดับ L2 สำเร็จ ส่งคืนมาในตัวแปร `aid` ของโครงสร้าง `wifi_event_sta_connected_t`
+
 2. เหตุใดการเชื่อมต่อ Wi-Fi ความปลอดภัยแบบ WPA2-PSK จึงสามารถผ่าน Phase 2 (Authentication) และ Phase 3 (Association) จนเกิด Event `WIFI_EVENT_STA_CONNECTED` ได้สำเร็จ แม้ผู้ใช้จะป้อนรหัสผ่าน (Password) ผิด?
+   * **ตอบ:** เพราะเฟส 2-3 เป็นแค่การตกลงสัญญาณคลื่นวิทยุระดับ L2 (Link-Layer) โดยยังไม่มีการตรวจสอบรหัสผ่านจริง รหัสผ่านจะถูกนำไปตรวจสอบในเฟส 4 (4-Way Handshake) ภายหลังการเชื่อมต่อฮาร์ดแวร์เสร็จสิ้น
+
 3. หาก Router มีการตั้งค่า **MAC Address Filtering** (อนุญาตเฉพาะ MAC ที่ลงทะเบียน) ESP32 จะล้มเหลวในเฟสใด และจะส่ง Disconnect Reason Code ใดออกมา?
+   * **ตอบ:** ล้มเหลวในเฟส 3 (Association Phase) และส่ง Disconnect Reason Code `203` (`WIFI_REASON_ASSOC_FAIL`) หรือ `205` (`WIFI_REASON_ASSOCIATION_TOOMANY` / `ASSOC_NOT_AUTHED`) ออกมา
+
 4. สรุปความแตกต่างสำคัญระหว่างจุดสิ้นสุดของ **Phase 3 (Link-Layer Connected)** กับจุดสิ้นสุดของ **Phase 5 (IP Address Assigned)**
+   * **ตอบ:**
+     * **Phase 3 (Link-Layer Connected):** เชื่อมต่อฮาร์ดแวร์/คลื่นวิทยุกับเราเตอร์เสร็จแล้ว แต่ยังใช้งานส่งข้อมูลอินเทอร์เน็ตไม่ได้ (ยังไม่เช็ครหัสผ่านและยังไม่มี IP)
+     * **Phase 5 (IP Address Assigned):** ยืนยันรหัสผ่านผ่านและได้ IP Address มาเรียบร้อยแล้ว พร้อมส่งข้อมูลอินเทอร์เน็ตได้สมบูรณ์
