@@ -457,6 +457,7 @@ void app_main(void) {
 | ลำดับ | ชื่อเครือข่าย (SSID) | MAC Address (BSSID) | ความแรงสัญญาณ (RSSI: dBm) | ช่องความถี่ (Channel) | ประเภทการเข้ารหัส (Encryption Type) |
 | :---: | :--- | :--- | :---: | :---: | :--- |
 | 1 | iPhone 20 Pro Max Ultra | 0E:9C:70:BF:49:12 | -27 dBm | 6 | WPA2_WPA3_PSK |
+| 1 | iPhone 20 Pro Max Ultra | 90:E1:7B:65:C2:6B | -27 dBm | 6 | WPA2_WPA3_PSK |
 | 2 | NeennyP-2.4G | 48:F8:DB:19:81:38 | -47 dBm | 5 | WPA_WPA2_PSK |
 | 3 | PJ_2.4G | 0C:01:4B:41:66:B8 | -59 dBm | 8 | WPA_WPA2_PSK |
 | 4 | Hongguy | F0:0C:51:7D:68:44 | -61 dBm | 8 | WPA_WPA2_PSK |

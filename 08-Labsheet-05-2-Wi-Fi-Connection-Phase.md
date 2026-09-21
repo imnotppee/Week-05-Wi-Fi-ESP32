@@ -378,6 +378,7 @@ void app_main(void) {
 | :--- | :--- |
 | **SSID** | iPhone 20 Pro Max Ultra |
 | **BSSID (MAC Address)** | 0E:9C:70:BF:49:12 |
+| **BSSID (MAC Address)** | 90:E1:7B:65:C2:6B |
 | **Channel** | 6 |
 | **IP Address** | 172.20.10.2 |
 | **Subnet Mask** | 255.255.255.240 |
